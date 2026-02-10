@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "293736296065",
+    "project_id": "icmc-dorm",
+    "storage_bucket": "icmc-dorm.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:293736296065:android:31cf8ff2e559efe49e6780",
+        "android_client_info": {
+          "package_name": "com.example.icmc_dorm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwDZw5jjMeQIg5l35W_R4z810r4kggoFE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
