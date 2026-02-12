@@ -69,7 +69,7 @@ class _LargeRoutePageState extends State<LargeRoutePage> {
           body: Row(
             children: [
               SideMenu(
-                backgroundColor: UIColor().mediumGray,
+                backgroundColor: UIColor().orangeBlack,
                 hasResizerToggle: false,
                 hasResizer: false,
                 controller: _sideMenuController,
@@ -122,14 +122,11 @@ class _LargeRoutePageState extends State<LargeRoutePage> {
                           },
                           title: e.name,
                           titleStyle: GoogleFonts.inter(
-                            textStyle: TextStyle(color: UIColor().whiteSmoke, fontSize: 16),
+                            textStyle: TextStyle(color: UIColor().lightGray, fontSize: 16),
                           ),
-                          hoverColor:
-                              e.idx == appState.bottomNavIndex
-                                  ? UIColor().transparentCeleste
-                                  : UIColor().transparentSpringGreen,
+                          hoverColor: UIColor().transparentPrimaryOrange,
                           hasSelectedLine: false,
-                          highlightSelectedColor: UIColor().transparentCeleste,
+                          highlightSelectedColor: UIColor().transparentPrimaryOrange,
                           selectedTitleStyle: GoogleFonts.inter(
                             textStyle: TextStyle(
                               fontSize: 16,

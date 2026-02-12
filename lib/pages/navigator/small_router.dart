@@ -90,9 +90,9 @@ class _SmallRoutePageState extends State<SmallRoutePage> {
                 children: [Icon(iconList[index], size: 24, color: color)],
               );
             },
-            backgroundColor: UIColor().mediumGray,
+            backgroundColor: UIColor().orangeBlack,
             activeIndex: appState.bottomNavIndex,
-            splashColor: UIColor().celeste,
+            splashColor: UIColor().transparentPrimaryOrange,
             gapLocation: GapLocation.none,
             onTap: (index) => appState.setBottomNavIndex(index),
           ),

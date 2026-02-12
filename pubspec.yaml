@@ -44,6 +44,7 @@ dependencies:
   flutter_side_menu: ^0.5.41
   excel: ^4.0.6
   url_launcher: ^6.3.2
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:

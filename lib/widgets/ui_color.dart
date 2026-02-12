@@ -2,43 +2,49 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class UIColor {
-  final Color primaryColorDark = const Color.fromARGB(255, 178, 255, 255);
-  final Color primaryColorLight = const Color.fromARGB(255, 15, 165, 165);
+  final Color primaryBlue = const Color.fromARGB(255, 28, 37, 90);
+  final Color secondaryBlue = const Color.fromARGB(255, 221, 227, 238);
 
-  final Color celeste = const Color.fromARGB(255, 178, 255, 255);
-  final Color scarlet = const Color.fromARGB(255, 255, 36, 00);
-  final Color springGreen = const Color.fromARGB(255, 00, 255, 127);
-  final Color lightCanary = const Color.fromARGB(255, 255, 225, 159);
+  final Color primaryDarkRed = const Color.fromARGB(255, 125, 0, 0);
+  final Color secondaryRed = const Color.fromARGB(255, 255, 59, 45);
+
+  final Color primaryRed = const Color.fromARGB(255, 255, 64, 64);
+  final Color primaryGreen = const Color.fromARGB(255, 64, 255, 64);
+  final Color brightBlue = const Color.fromARGB(255, 0, 225, 255);
 
   final Color white = const Color.fromARGB(255, 255, 255, 255);
-  final Color whiteSmoke = const Color.fromARGB(255, 245, 245, 245);
-  final Color gray = const Color.fromARGB(255, 180, 180, 180);
-  final Color mediumGray = const Color.fromARGB(255, 56, 56, 56);
-  final Color darkGray = const Color.fromARGB(255, 32, 32, 32);
+  final Color darkGray = const Color.fromARGB(255, 90, 90, 90);
+  final Color gray = const Color.fromARGB(255, 175, 175, 175);
+  final Color mediumGray = const Color.fromARGB(255, 215, 215, 215);
+  final Color lightGray = const Color.fromARGB(255, 245, 245, 245);
 
-  // transparent colors
-  final Color transparentCeleste = const Color.fromARGB(255, 224, 242, 242);
-  final Color transparentScarlet = const Color.fromARGB(255, 255, 111, 88);
-  final Color transparentSpringGreen = const Color.fromARGB(255, 136, 254, 195);
-  final Color transparentLightCanary = const Color.fromARGB(255, 255, 237, 199);
+  final Color blueBlack = const Color.fromARGB(255, 14, 19, 45);
+  final Color orangeBlack = const Color.fromARGB(255, 30, 5, 5);
+
+  // Transparent Colors
+  final Color transparentPrimaryBlue = const Color.fromARGB(255, 201, 214, 232);
+  final Color transparentSecondaryBlue = const Color.fromARGB(255, 213, 246, 251);
+
+  final Color transparentPrimaryOrange = const Color.fromARGB(255, 255, 197, 183);
+  final Color transparentSecondaryOrange = const Color.fromARGB(255, 255, 215, 200);
 }
 
 final ThemeData lightTheme = ThemeData(
-  primaryColor: UIColor().primaryColorLight,
-  scaffoldBackgroundColor: UIColor().whiteSmoke,
-  appBarTheme: AppBarTheme(color: UIColor().primaryColorLight, foregroundColor: UIColor().darkGray),
-  iconTheme: IconThemeData(color: UIColor().primaryColorLight),
+  primaryColor: UIColor().primaryDarkRed,
+  scaffoldBackgroundColor: UIColor().lightGray,
+  appBarTheme: AppBarTheme(color: UIColor().primaryDarkRed, foregroundColor: UIColor().darkGray),
+  iconTheme: IconThemeData(color: UIColor().primaryRed),
   textTheme: TextTheme(
     displayLarge: GoogleFonts.inter(
       textStyle: TextStyle(
-        color: UIColor().primaryColorLight,
+        color: UIColor().primaryDarkRed,
         fontSize: 36,
         fontWeight: FontWeight.bold,
       ),
     ),
     displayMedium: GoogleFonts.inter(
       textStyle: TextStyle(
-        color: UIColor().primaryColorLight,
+        color: UIColor().primaryDarkRed,
         fontSize: 20,
         fontWeight: FontWeight.bold,
       ),
@@ -49,22 +55,22 @@ final ThemeData lightTheme = ThemeData(
     headlineSmall: GoogleFonts.inter(
       textStyle: TextStyle(color: UIColor().white, fontSize: 16, fontWeight: FontWeight.w500),
     ),
-    bodyMedium: GoogleFonts.inter(textStyle: TextStyle(color: UIColor().primaryColorLight)),
-    labelLarge: GoogleFonts.inter(textStyle: TextStyle(color: UIColor().springGreen)),
+    bodyMedium: GoogleFonts.inter(textStyle: TextStyle(color: UIColor().primaryDarkRed)),
+    labelLarge: GoogleFonts.inter(textStyle: TextStyle(color: UIColor().primaryDarkRed)),
     labelSmall: GoogleFonts.inter(textStyle: TextStyle(color: UIColor().gray)),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      foregroundColor: UIColor().whiteSmoke,
-      backgroundColor: UIColor().primaryColorLight,
+      foregroundColor: UIColor().lightGray,
+      backgroundColor: UIColor().primaryDarkRed,
       shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(8)),
       shadowColor: UIColor().gray,
     ),
   ),
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
-      foregroundColor: WidgetStatePropertyAll(UIColor().whiteSmoke),
-      backgroundColor: WidgetStatePropertyAll(UIColor().primaryColorLight),
+      foregroundColor: WidgetStatePropertyAll(UIColor().lightGray),
+      backgroundColor: WidgetStatePropertyAll(UIColor().primaryDarkRed),
       shape: WidgetStatePropertyAll(
         ContinuousRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
@@ -74,100 +80,24 @@ final ThemeData lightTheme = ThemeData(
   textSelectionTheme: TextSelectionThemeData(cursorColor: UIColor().darkGray),
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
-    fillColor: UIColor().transparentCeleste,
-    hintStyle: TextStyle(fontSize: 16, color: UIColor().primaryColorLight),
-    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: UIColor().primaryColorLight)),
+    fillColor: UIColor().darkGray,
+    hintStyle: TextStyle(fontSize: 16, color: UIColor().primaryDarkRed),
+    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: UIColor().primaryDarkRed)),
     border: UnderlineInputBorder(
       borderRadius: BorderRadius.circular(4),
-      borderSide: BorderSide(color: UIColor().springGreen),
+      borderSide: BorderSide(color: UIColor().primaryDarkRed),
     ),
-    hoverColor: UIColor().transparentSpringGreen,
-    errorStyle: TextStyle(color: UIColor().scarlet),
-    floatingLabelStyle: TextStyle(color: UIColor().primaryColorLight),
+    hoverColor: UIColor().transparentSecondaryOrange,
+    errorStyle: TextStyle(color: UIColor().primaryRed),
+    floatingLabelStyle: TextStyle(color: UIColor().primaryDarkRed),
   ),
   snackBarTheme: SnackBarThemeData(
-    backgroundColor: UIColor().transparentCeleste,
-    contentTextStyle: GoogleFonts.inter(textStyle: TextStyle(color: UIColor().primaryColorLight)),
+    backgroundColor: UIColor().transparentPrimaryOrange,
+    contentTextStyle: GoogleFonts.inter(textStyle: TextStyle(color: UIColor().primaryDarkRed)),
   ),
-  scrollbarTheme: ScrollbarThemeData(thumbColor: WidgetStatePropertyAll(UIColor().springGreen)),
-  cardTheme: CardTheme(color: UIColor().whiteSmoke, elevation: 3),
-  highlightColor: UIColor().springGreen,
-  dividerTheme: DividerThemeData(color: UIColor().primaryColorLight, thickness: 1.5),
-  useMaterial3: true,
-);
-
-final ThemeData darkTheme = ThemeData(
-  primaryColor: UIColor().primaryColorDark,
-  scaffoldBackgroundColor: UIColor().darkGray,
-  appBarTheme: AppBarTheme(color: UIColor().primaryColorDark, foregroundColor: UIColor().darkGray),
-  iconTheme: IconThemeData(color: UIColor().primaryColorDark),
-  textTheme: TextTheme(
-    displayLarge: GoogleFonts.inter(
-      textStyle: TextStyle(
-        color: UIColor().primaryColorDark,
-        fontSize: 36,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-    displayMedium: GoogleFonts.inter(
-      textStyle: TextStyle(
-        color: UIColor().primaryColorDark,
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-    headlineMedium: GoogleFonts.inter(
-      textStyle: TextStyle(
-        color: UIColor().primaryColorDark,
-        fontSize: 20,
-        fontWeight: FontWeight.w500,
-      ),
-    ),
-    bodyMedium: GoogleFonts.inter(textStyle: TextStyle(color: UIColor().primaryColorDark)),
-    labelLarge: GoogleFonts.inter(textStyle: TextStyle(color: UIColor().springGreen)),
-    labelSmall: GoogleFonts.inter(textStyle: TextStyle(color: UIColor().gray)),
-  ),
-  elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(
-      foregroundColor: UIColor().darkGray,
-      backgroundColor: UIColor().springGreen,
-      shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(8)),
-    ),
-  ),
-  textButtonTheme: TextButtonThemeData(
-    style: ButtonStyle(
-      foregroundColor: WidgetStatePropertyAll(UIColor().darkGray),
-      backgroundColor: WidgetStatePropertyAll(UIColor().springGreen),
-      shape: WidgetStatePropertyAll(
-        ContinuousRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      ),
-    ),
-  ),
-  textSelectionTheme: TextSelectionThemeData(cursorColor: UIColor().darkGray),
-  inputDecorationTheme: InputDecorationTheme(
-    filled: true,
-    fillColor: UIColor().transparentCeleste,
-    hintStyle: TextStyle(fontSize: 16, color: UIColor().darkGray),
-    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: UIColor().primaryColorDark)),
-    border: UnderlineInputBorder(
-      borderRadius: BorderRadius.circular(4),
-      borderSide: BorderSide(color: UIColor().springGreen),
-    ),
-    hoverColor: UIColor().transparentSpringGreen,
-    errorStyle: TextStyle(color: UIColor().scarlet),
-    floatingLabelStyle: TextStyle(color: UIColor().gray),
-  ),
-  snackBarTheme: SnackBarThemeData(
-    backgroundColor: UIColor().transparentCeleste,
-    contentTextStyle: GoogleFonts.inter(textStyle: TextStyle(color: UIColor().darkGray)),
-  ),
-  scrollbarTheme: ScrollbarThemeData(thumbColor: WidgetStatePropertyAll(UIColor().springGreen)),
-  cardTheme: CardTheme(color: UIColor().mediumGray),
-  highlightColor: UIColor().springGreen,
-  dividerTheme: DividerThemeData(color: UIColor().primaryColorDark, thickness: 1.5),
-  dialogTheme: DialogTheme(
-    backgroundColor: UIColor().mediumGray,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-  ),
+  scrollbarTheme: ScrollbarThemeData(thumbColor: WidgetStatePropertyAll(UIColor().primaryDarkRed)),
+  cardTheme: CardTheme(color: UIColor().lightGray, elevation: 3),
+  highlightColor: UIColor().transparentSecondaryOrange,
+  dividerTheme: DividerThemeData(color: UIColor().primaryDarkRed, thickness: 1.5),
   useMaterial3: true,
 );

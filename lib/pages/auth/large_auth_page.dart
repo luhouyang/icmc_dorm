@@ -12,15 +12,9 @@ class _LargeAuthPageState extends State<LargeAuthPage> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: TextButton(
-        style: ButtonStyle(
-          padding: WidgetStatePropertyAll(EdgeInsets.fromLTRB(16, 4, 16, 4)),
-          shape: WidgetStatePropertyAll(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-          ),
-        ),
+      child: ElevatedButton(
         onPressed: () => AuthService().signInWithGoogle(),
-        child: Text("LOGIN"),
+        child: Text("LOGIN", style: TextStyle(fontWeight: FontWeight.bold),),
       ),
     );
   }
