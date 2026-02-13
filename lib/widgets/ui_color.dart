@@ -49,6 +49,13 @@ final ThemeData lightTheme = ThemeData(
         fontWeight: FontWeight.bold,
       ),
     ),
+    displaySmall: GoogleFonts.inter(
+      textStyle: TextStyle(
+        color: UIColor().primaryDarkRed,
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
     headlineMedium: GoogleFonts.inter(
       textStyle: TextStyle(color: UIColor().white, fontSize: 20, fontWeight: FontWeight.w500),
     ),
@@ -80,7 +87,7 @@ final ThemeData lightTheme = ThemeData(
   textSelectionTheme: TextSelectionThemeData(cursorColor: UIColor().darkGray),
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
-    fillColor: UIColor().darkGray,
+    fillColor: UIColor().transparentPrimaryOrange,
     hintStyle: TextStyle(fontSize: 16, color: UIColor().primaryDarkRed),
     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: UIColor().primaryDarkRed)),
     border: UnderlineInputBorder(

@@ -10,6 +10,14 @@ class RoomEntity {
   final String id; // firebase auth id
   String name;
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is RoomEntity && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
+
   RoomEntity({required this.id, required this.name});
 
   factory RoomEntity.fromMap(Map<String, dynamic> map) {

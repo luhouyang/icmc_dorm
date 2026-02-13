@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:icmc_dorm/services/auth_service/auth_service.dart';
+import 'package:icmc_dorm/widgets/h1_text.dart';
 
 class LargeAuthPage extends StatefulWidget {
   const LargeAuthPage({super.key});
@@ -12,9 +13,17 @@ class _LargeAuthPageState extends State<LargeAuthPage> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ElevatedButton(
-        onPressed: () => AuthService().signInWithGoogle(),
-        child: Text("LOGIN", style: TextStyle(fontWeight: FontWeight.bold),),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const H1Text(text: "Login"),
+          const SizedBox(height: 32),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(16)),
+            onPressed: () => AuthService().signInWithGoogle(),
+            child: Text("Login with Google", style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+        ],
       ),
     );
   }
