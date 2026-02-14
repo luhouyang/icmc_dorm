@@ -54,8 +54,8 @@ class ExcelService {
           guestContact = userContact[record.uid.first] ?? "No Contact";
         }
 
-        String checkin = DateFormat('yyyy-MM-dd').format(record.checkinTime.toDate());
-        String checkout = DateFormat('yyyy-MM-dd').format(record.checkoutTime.toDate());
+        String checkin = DateFormat('yyyy-MM-dd HH:mm').format(record.checkinTime.toDate());
+        String checkout = DateFormat('yyyy-MM-dd HH:mm').format(record.checkoutTime.toDate());
 
         sheet.appendRow([
           TextCellValue(roomName),

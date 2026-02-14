@@ -83,9 +83,7 @@ class _LargeProfilePageState extends State<LargeProfilePage> {
                                     )
                                     .toList(),
                             onChanged: (value) {
-                              setState(() {
-                                _selectedGender = value.toString();
-                              });
+                              _selectedGender = value.toString();
                             },
                             validator: (value) {
                               if (value == null) {

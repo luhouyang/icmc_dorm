@@ -23,6 +23,8 @@ class _LargeAuthPageState extends State<LargeAuthPage> {
             onPressed: () => AuthService().signInWithGoogle(),
             child: Text("Login with Google", style: TextStyle(fontWeight: FontWeight.bold)),
           ),
+          const SizedBox(height: 32),
+          const Text("To login with another email, clear cache first."),
         ],
       ),
     );

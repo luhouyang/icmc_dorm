@@ -33,8 +33,8 @@ class _RecordCardState extends State<RecordCard> {
       orElse: () => RoomEntity(id: "N/A", name: "Unknown Room"),
     );
 
-    final entryStr = DateFormat('yyyy-MM-dd').format(widget.recordEntity.checkinTime.toDate());
-    final exitStr = DateFormat('yyyy-MM-dd').format(widget.recordEntity.checkoutTime.toDate());
+    final entryStr = DateFormat('yyyy-MM-dd HH:mm').format(widget.recordEntity.checkinTime.toDate());
+    final exitStr = DateFormat('yyyy-MM-dd HH:mm').format(widget.recordEntity.checkoutTime.toDate());
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -45,7 +45,7 @@ class _RecordCardState extends State<RecordCard> {
       child: ExpansionTile(
         // Use the passed displayName instead of a FutureBuilder
         title: Text(widget.displayName, style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text("Stay: $entryStr to $exitStr\nRoom: ${room.name}"),
+        subtitle: Text("Stay: $entryStr\tto\t$exitStr\nRoom: ${room.name}"),
         children: [
           Padding(
             padding: const EdgeInsets.all(16),

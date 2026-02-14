@@ -67,7 +67,7 @@ class _SmallRoutePageState extends State<SmallRoutePage> {
                       IconButton(
                         onPressed: () {
                           launchUrlAsync(
-                            "https://docs.google.com/document/d/12MGhSWxARcgWKz9wVdSI6L3pBw6fGGmn4U0TM5BSjXk/edit?usp=sharing",
+                            "https://drive.google.com/file/d/15JMzr2nTlTdD2UmYF_Z5SD_p2-ZYuBJZ/view?usp=sharing",
                           );
                         },
                         icon: const Icon(Icons.info_outline),

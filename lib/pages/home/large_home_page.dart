@@ -5,6 +5,7 @@ import 'package:icmc_dorm/entities/record_entity.dart';
 import 'package:icmc_dorm/entities/room_entity.dart';
 import 'package:icmc_dorm/entities/user_entity.dart';
 import 'package:icmc_dorm/services/firestore_service/firestore_service.dart';
+import 'package:icmc_dorm/states/app_state.dart';
 import 'package:icmc_dorm/states/user_state.dart';
 import 'package:icmc_dorm/widgets/h1_text.dart';
 import 'package:icmc_dorm/widgets/h2_text.dart';
@@ -110,7 +111,9 @@ class _LargeHomePageState extends State<LargeHomePage> {
     Function(DateTime) onDateSelected,
   ) async {
     ThemeData theme = Theme.of(context);
-    final DateTime? picked = await showDatePicker(
+    
+    // 1. Pick Date
+    final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: initialDate,
       firstDate: DateTime(2000),
@@ -144,7 +147,50 @@ class _LargeHomePageState extends State<LargeHomePage> {
         );
       },
     );
-    if (picked != null) setState(() => onDateSelected(picked));
+    
+    if (pickedDate == null || !context.mounted) return;
+
+    // 2. Pick Time
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(initialDate),
+      builder: (context, child) {
+        return Theme(
+          data: theme.copyWith(
+            timePickerTheme: TimePickerThemeData(
+              backgroundColor: UIColor().lightGray,
+              hourMinuteColor: UIColor().transparentPrimaryOrange,
+              hourMinuteTextColor: UIColor().primaryDarkRed,
+              dayPeriodColor: UIColor().transparentPrimaryBlue,
+              dayPeriodTextColor: UIColor().primaryBlue,
+              dialHandColor: UIColor().primaryBlue,
+              dialBackgroundColor: UIColor().white,
+              entryModeIconColor: UIColor().primaryBlue,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: ButtonStyle(
+                foregroundColor: WidgetStatePropertyAll(UIColor().primaryBlue),
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (pickedTime == null) return;
+
+    // 3. Combine
+    final DateTime finalDateTime = DateTime(
+      pickedDate.year,
+      pickedDate.month,
+      pickedDate.day,
+      pickedTime.hour,
+      pickedTime.minute,
+    );
+
+    setState(() => onDateSelected(finalDateTime));
   }
 
   Widget _buildDatePickerButton({required DateTime date, required VoidCallback onTap}) {
@@ -166,7 +212,7 @@ class _LargeHomePageState extends State<LargeHomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              DateFormat('yyyy-MM-dd').format(date),
+              DateFormat('yyyy-MM-dd HH:mm').format(date),
               style: TextStyle(color: UIColor().darkGray, fontWeight: FontWeight.bold),
             ),
             Icon(Icons.calendar_today, size: 18, color: Theme.of(context).primaryColor),
@@ -179,6 +225,7 @@ class _LargeHomePageState extends State<LargeHomePage> {
   @override
   Widget build(BuildContext context) {
     UserState userState = Provider.of<UserState>(context, listen: false);
+    AppState appState = Provider.of<AppState>(context, listen: false);
 
     return FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
       future: _roomsFuture,
@@ -201,184 +248,226 @@ class _LargeHomePageState extends State<LargeHomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  if (userState.userEntity.name == "username" ||
+                      userState.userEntity.gender == "NA" ||
+                      userState.userEntity.contact == "NA")
+                    Container(
+                      decoration: BoxDecoration(
+                        color: UIColor().transparentPrimaryOrange,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      width: 375,
+                      height: 120,
+                      margin: EdgeInsets.fromLTRB(0, 0, 0, 16),
+                      padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Welcome to the family", style: TextStyle(fontSize: 32)),
+                          SizedBox(height: 12),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Introduce yourself", style: TextStyle(fontSize: 16)),
+                              SizedBox(width: 8),
+                              ElevatedButton(
+                                onPressed: () => appState.setBottomNavIndex(1),
+                                child: Text("here", style: TextStyle(fontSize: 16)),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   const H1Text(text: "New Record"),
                   const SizedBox(height: 16),
-                  Form(
-                    key: _recordForm,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const H2Text(text: "Room"),
-                        const SizedBox(height: 8),
-                        DropdownButtonFormField2<RoomEntity>(
-                          value: _selectedRoom,
-                          items:
-                              roomsList
-                                  .map((r) => DropdownMenuItem(value: r, child: Text(r.name)))
-                                  .toList(),
-                          onChanged: (val) => setState(() => _selectedRoom = val),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        const H2Text(text: "Record Mode"),
-                        Row(
+                  (userState.userEntity.name == "username" ||
+                          userState.userEntity.gender == "NA" ||
+                          userState.userEntity.contact == "NA")
+                      ? Text("Please complete profile")
+                      : Form(
+                        key: _recordForm,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Radio<bool>(
-                              value: false,
-                              activeColor: UIColor().primaryDarkRed,
-                              groupValue: _isSharedRecord,
-                              onChanged:
-                                  (val) => setState(() {
-                                    _isSharedRecord = val!;
-                                    _selectedFriend = null;
-                                  }),
+                            const H2Text(text: "Room"),
+                            const SizedBox(height: 8),
+                            DropdownButtonFormField2<RoomEntity>(
+                              value: _selectedRoom,
+                              items:
+                                  roomsList
+                                      .map((r) => DropdownMenuItem(value: r, child: Text(r.name)))
+                                      .toList(),
+                              onChanged: (val) => setState(() => _selectedRoom = val),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                              ),
                             ),
-                            const Text("Personal"),
-                            const SizedBox(width: 20),
-                            Radio<bool>(
-                              value: true,
-                              activeColor: UIColor().primaryDarkRed,
-                              groupValue: _isSharedRecord,
-                              onChanged: (val) => setState(() => _isSharedRecord = val!),
+                            const SizedBox(height: 16),
+                            const H2Text(text: "Record Mode"),
+                            Row(
+                              children: [
+                                Radio<bool>(
+                                  value: false,
+                                  activeColor: UIColor().primaryDarkRed,
+                                  groupValue: _isSharedRecord,
+                                  onChanged:
+                                      (val) => setState(() {
+                                        _isSharedRecord = val!;
+                                        _selectedFriend = null;
+                                      }),
+                                ),
+                                const Text("Personal"),
+                                const SizedBox(width: 20),
+                                Radio<bool>(
+                                  value: true,
+                                  activeColor: UIColor().primaryDarkRed,
+                                  groupValue: _isSharedRecord,
+                                  onChanged: (val) => setState(() => _isSharedRecord = val!),
+                                ),
+                                const Text("Add for Friend"),
+                              ],
                             ),
-                            const Text("Add for Friend"),
+                            if (_isSharedRecord) ...[
+                              const SizedBox(height: 16),
+                              const H2Text(text: "Select Friend"),
+                              const SizedBox(height: 8),
+                              DropdownButtonFormField2<UserEntity>(
+                                value: _selectedFriend,
+                                hint: const Text("Choose a completed profile"),
+                                items:
+                                    _availableFriends
+                                        .map(
+                                          (user) => DropdownMenuItem(
+                                            value: user,
+                                            child: Text("${user.name} (${user.contact})"),
+                                          ),
+                                        )
+                                        .toList(),
+                                onChanged: (val) => setState(() => _selectedFriend = val),
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                ),
+                                validator:
+                                    (value) =>
+                                        _isSharedRecord && value == null
+                                            ? "Please select a friend"
+                                            : null,
+                              ),
+                            ],
+                            const SizedBox(height: 16),
+                            const H2Text(text: "Entry Date"),
+                            const SizedBox(height: 8),
+                            _buildDatePickerButton(
+                              date: _selectedEntryDate,
+                              onTap:
+                                  () => _selectDate(
+                                    context,
+                                    _selectedEntryDate,
+                                    (d) => _selectedEntryDate = d,
+                                  ),
+                            ),
+                            const SizedBox(height: 16),
+                            const H2Text(text: "Exit Date"),
+                            const SizedBox(height: 8),
+                            _buildDatePickerButton(
+                              date: _selectedExitDate,
+                              onTap:
+                                  () => _selectDate(
+                                    context,
+                                    _selectedExitDate,
+                                    (d) => _selectedExitDate = d,
+                                  ),
+                            ),
+                            const SizedBox(height: 32),
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: UIColor().primaryBlue,
+                                  padding: const EdgeInsets.all(16),
+                                ),
+                                onPressed: () async {
+                                  if (_recordForm.currentState!.validate()) {
+                                    showDialog(
+                                      context: context,
+                                      builder:
+                                          (context) =>
+                                              LoadingWidget().circularLoadingWidget(context),
+                                    );
+
+                                    // Logic to separate own and friend records based on UID order
+                                    List<String> uids = [];
+                                    if (_isSharedRecord && _selectedFriend != null) {
+                                      // Friend's UID is first to indicate they are the primary subject
+                                      uids.add(_selectedFriend!.id);
+                                      uids.add(userState.userEntity.id);
+                                    } else {
+                                      // Personal record: only current user UID
+                                      uids.add(userState.userEntity.id);
+                                    }
+
+                                    String docId =
+                                        _editingRecordId ??
+                                        FirebaseFirestore.instance.collection("records").doc().id;
+
+                                    final newRecordEntity = RecordEntity(
+                                      id: docId,
+                                      roomId: _selectedRoom!.id,
+                                      uid: uids,
+                                      checkinTime: Timestamp.fromDate(_selectedEntryDate),
+                                      checkoutTime: Timestamp.fromDate(_selectedExitDate),
+                                    );
+
+                                    await FirestoreService().addRecord(context, newRecordEntity);
+
+                                    if (context.mounted) {
+                                      Navigator.of(context).pop();
+                                      snackBarText.showBanner(
+                                        msg:
+                                            _editingRecordId == null
+                                                ? "Added record"
+                                                : "Updated record",
+                                        context: context,
+                                      );
+                                      _resetForm();
+                                    }
+                                  }
+                                },
+                                child: Text(
+                                  _editingRecordId == null ? "SAVE RECORD" : "UPDATE RECORD",
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            if (_editingRecordId != null) ...[
+                              const SizedBox(height: 16),
+                              ElevatedButton(
+                                onPressed: _resetForm,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Theme.of(context).primaryColor,
+                                  padding: const EdgeInsets.all(16),
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    "CANCEL EDIT",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ],
                         ),
-                        if (_isSharedRecord) ...[
-                          const SizedBox(height: 16),
-                          const H2Text(text: "Select Friend"),
-                          const SizedBox(height: 8),
-                          DropdownButtonFormField2<UserEntity>(
-                            value: _selectedFriend,
-                            hint: const Text("Choose a completed profile"),
-                            items:
-                                _availableFriends
-                                    .map(
-                                      (user) => DropdownMenuItem(
-                                        value: user,
-                                        child: Text("${user.name} (${user.contact})"),
-                                      ),
-                                    )
-                                    .toList(),
-                            onChanged: (val) => setState(() => _selectedFriend = val),
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
-                            ),
-                            validator:
-                                (value) =>
-                                    _isSharedRecord && value == null
-                                        ? "Please select a friend"
-                                        : null,
-                          ),
-                        ],
-                        const SizedBox(height: 16),
-                        const H2Text(text: "Entry Date"),
-                        const SizedBox(height: 8),
-                        _buildDatePickerButton(
-                          date: _selectedEntryDate,
-                          onTap:
-                              () => _selectDate(
-                                context,
-                                _selectedEntryDate,
-                                (d) => _selectedEntryDate = d,
-                              ),
-                        ),
-                        const SizedBox(height: 16),
-                        const H2Text(text: "Exit Date"),
-                        const SizedBox(height: 8),
-                        _buildDatePickerButton(
-                          date: _selectedExitDate,
-                          onTap:
-                              () => _selectDate(
-                                context,
-                                _selectedExitDate,
-                                (d) => _selectedExitDate = d,
-                              ),
-                        ),
-                        const SizedBox(height: 32),
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: UIColor().primaryBlue,
-                              padding: const EdgeInsets.all(16),
-                            ),
-                            onPressed: () async {
-                              if (_recordForm.currentState!.validate()) {
-                                showDialog(
-                                  context: context,
-                                  builder:
-                                      (context) => LoadingWidget().circularLoadingWidget(context),
-                                );
-
-                                // Logic to separate own and friend records based on UID order
-                                List<String> uids = [];
-                                if (_isSharedRecord && _selectedFriend != null) {
-                                  // Friend's UID is first to indicate they are the primary subject
-                                  uids.add(_selectedFriend!.id);
-                                  uids.add(userState.userEntity.id);
-                                } else {
-                                  // Personal record: only current user UID
-                                  uids.add(userState.userEntity.id);
-                                }
-
-                                String docId =
-                                    _editingRecordId ??
-                                    FirebaseFirestore.instance.collection("records").doc().id;
-
-                                final newRecordEntity = RecordEntity(
-                                  id: docId,
-                                  roomId: _selectedRoom!.id,
-                                  uid: uids,
-                                  checkinTime: Timestamp.fromDate(_selectedEntryDate),
-                                  checkoutTime: Timestamp.fromDate(_selectedExitDate),
-                                );
-
-                                await FirestoreService().addRecord(context, newRecordEntity);
-
-                                if (context.mounted) {
-                                  Navigator.of(context).pop();
-                                  snackBarText.showBanner(
-                                    msg:
-                                        _editingRecordId == null
-                                            ? "Added record"
-                                            : "Updated record",
-                                    context: context,
-                                  );
-                                  _resetForm();
-                                }
-                              }
-                            },
-                            child: Text(
-                              _editingRecordId == null ? "SAVE RECORD" : "UPDATE RECORD",
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                        if (_editingRecordId != null) ...[
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: _resetForm,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Theme.of(context).primaryColor,
-                              padding: const EdgeInsets.all(16),
-                            ),
-                            child: const Center(
-                              child: Text(
-                                "CANCEL EDIT",
-                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
+                      ),
                   const SizedBox(height: 32),
                   _buildRecordsStream(userState, roomsList),
                 ],

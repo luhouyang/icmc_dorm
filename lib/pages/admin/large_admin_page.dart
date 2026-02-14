@@ -239,7 +239,7 @@ class _LargeAdminPageState extends State<LargeAdminPage> {
                         // Date Picker (Hidden if 'All')
                         if (_filterType != 'All') ...[
                           Text(
-                            DateFormat('yyyy-MM-dd').format(_selectedDate),
+                            DateFormat('yyyy-MM-dd HH:mm').format(_selectedDate),
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -316,24 +316,33 @@ class _LargeAdminPageState extends State<LargeAdminPage> {
                                       DataColumn(
                                         label: Text(
                                           '名字（中）',
+                                          overflow: TextOverflow.fade,
+                                          softWrap: true,
+                                          maxLines: 1,
                                           style: TextStyle(fontWeight: FontWeight.bold),
                                         ),
                                       ),
                                       DataColumn(
                                         label: Text(
                                           '联络号码（有注册WhatsApp）',
+                                          softWrap: true,
+                                          maxLines: 1,
                                           style: TextStyle(fontWeight: FontWeight.bold),
                                         ),
                                       ),
                                       DataColumn(
                                         label: Text(
                                           '入住日期与时间',
+                                          softWrap: true,
+                                          maxLines: 1,
                                           style: TextStyle(fontWeight: FontWeight.bold),
                                         ),
                                       ),
                                       DataColumn(
                                         label: Text(
                                           '离开日期与时间',
+                                          softWrap: true,
+                                          maxLines: 1,
                                           style: TextStyle(fontWeight: FontWeight.bold),
                                         ),
                                       ),
@@ -370,14 +379,14 @@ class _LargeAdminPageState extends State<LargeAdminPage> {
                                               DataCell(
                                                 Text(
                                                   DateFormat(
-                                                    'yyyy-MM-dd',
+                                                    'yyyy-MM-dd HH:mm',
                                                   ).format(record.checkinTime.toDate()),
                                                 ),
                                               ),
                                               DataCell(
                                                 Text(
                                                   DateFormat(
-                                                    'yyyy-MM-dd',
+                                                    'yyyy-MM-dd HH:mm',
                                                   ).format(record.checkoutTime.toDate()),
                                                 ),
                                               ),
